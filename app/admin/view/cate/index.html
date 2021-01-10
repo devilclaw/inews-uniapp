@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>用户管理</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Font Awesome -->
+		<!-- DataTables -->
+		<link rel="stylesheet" href="{__PLUGINS__}/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="{__PLUGINS__}/datatables-responsive/css/responsive.bootstrap4.min.css">
+		<link rel="stylesheet" href="{__PLUGINS__}/fontawesome-free/css/all.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="{__DIST__}/css/adminlte.min.css">
+
+	</head>
+	<body class="hold-transition sidebar-mini layout-fixed">
+		<div class="wrapper">
+
+			<!-- Content Wrapper. Contains page content -->
+
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0 text-dark">
+								<small>
+									<a title="添加一条新数据" class="btn btn-success" href="{:url('/cate/add')}"><i class="fas fa-plus mr-2"></i>新增</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									<a title="查看列表" class="btn btn-primary" href="{:url('/cate/index')}"><i class="fas fa-list-alt mr-2"></i>列表</a>
+								</small>
+							</h1>
+						</div><!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item active"><i class="fas fa-home "></i> 首页 </li>
+								<li class="breadcrumb-item ">分类管理</li>
+							</ol>
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+				</div><!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+
+					<div style="padding: 0.5rem;">
+						<div class="row">
+							<div class="col-12">
+								<div class="card">
+									<div class="card-header">
+										<h3 class="card-title">分类管理</h3>
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body">
+										<table id="example1" class="table table-bordered table-striped">
+											<thead>
+												<tr>
+													<th>编号</th>
+													<th>名称</th>
+													<th>创建时间</th>
+													<th>状态</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												
+											</tbody>
+										 
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+								<!-- /.card -->
+							</div>
+							<!-- /.col -->
+						</div>
+						<!-- /.row -->
+					</div>
+
+				</div><!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+
+
+		</div>
+		<!-- ./wrapper -->
+
+		<!-- jQuery -->
+		<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="{__DIST__}/js/adminlte.js"></script>
+		<!-- Bootstrap 4 -->
+		<script src="{__PLUGINS__}/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="{__PLUGINS__}/datatables/jquery.dataTables.min.js"></script>
+		<script src="{__PLUGINS__}/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="{__PLUGINS__}/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="{__PLUGINS__}/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script>
+			layui.use(['layer'], function() {
+				layer = layui.layer;
+			});
+		  
+			$(function() {
+				$("#example1").DataTable({
+					"processing": true,/**显示加载中**/
+        "serverSide": true,/**开启服务器模式**/
+		"ajax":{
+			"url":"index",
+			"type":"POST",
+			"dataType":"JSON",
+			"dataSrc": 'tableData'
+		},
+			 
+			"pagingType": "full_numbers", 
+			'lengthChange': true,
+		 
+			'ordering'    : true,
+			"order": [[0,'asc']],
+			'info'        : true,
+			'autoWidth'   : false,
+			 
+			"stateSave": true,/**状态保存 - 再次加载页面时还原表格状态 默认false不保存当前状态刷新会还原 true保存当前状态**/
+			"stateDuration": -1,/**状态保存周期 -1表示仅保留当前会话的数据**/
+			"rowId":'catid',/**给每一行tr 添加一个唯一id**/
+			
+			
+			"oLanguage": {        
+			"sLengthMenu": "每页显示 _MENU_ 条记录",  
+			"sZeroRecords": "对不起，查询不到任何相关数据",   
+			"sInfo": "当前显示 _START_ 到 _END_ 条，共 _TOTAL_条记录", 
+			"sInfoEmtpy": "找不到相关数据",      
+			"sInfoFiltered": "",    
+			"sProcessing": "正在加载中...",   
+			"sSearch": "搜索",       
+			"oPaginate": {  
+			"sFirst": "首页",  
+			"sPrevious":" 上一页 ",  
+			"sNext": " 下一页 ",     
+			"sLast": " 末页 "  
+				},     
+			},	
+				
+					 
+					 
+					
+					"columns": [
+						/******列定义参数*****/
+						{
+							"data": "catid",
+							"name": "编号"
+						},
+						{
+							"data": "catname",
+							"name": "名称",
+							"orderable": false,
+							/**禁用排序**/
+							 
+							
+						},{
+							"data": "create_time",
+							"name": "创建时间",
+							"orderable": false,
+							/**禁用排序**/
+							 
+							
+						},
+                        {
+							"data": "status",
+							"name": "状态",
+							"orderable": false,
+							/**禁用排序**/
+						}
+						 
+
+
+					],
+					/******自定义列*****/
+					"columnDefs": [{
+						/**指定第最后一列**/
+						"targets": 4,
+						/**禁用排序**/
+						"orderable": false,
+						render: function(data, type, row, meta) {
+
+							var html = "";
+							html += '<a  class="btn btn-primary"  href="{:url("/cate/update")}?catid=' + row.catid +
+								'"  title="编辑"><i class="nav-icon fas fa-edit"></i></a>';
+							html += "&nbsp;&nbsp;";
+
+							 
+
+							html +=
+								'<a  class="btn btn-danger " style="color:#fff" onclick="layer.confirm(\'删除后无法恢复，确定要删除吗？\',{icon:3,title:\'提示\'}, function(index){del(\'' +
+								row.catid + '\');layer.close(index);});" title="删除"><i class="fas fa-trash-alt"></i></a>';
+							return html;
+						}
+					}],
+
+
+				});
+
+			});
+
+			function del(catid) {
+				$.ajax({
+					url: 'del',
+					type: 'post',
+					data: {
+						'catid': catid
+					},
+					success: function(res) {
+						//删除成功后页面局部刷新
+						if (res == 'true') {
+							$('#' + catid).remove(); //删除成功后页面局部刷新
+						} else {
+							layer.msg('删除失败！', {
+								icon: 5
+							});
+						}
+
+					}
+				})
+			}
+		</script>
+	</body>
+</html>

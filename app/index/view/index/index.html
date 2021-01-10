@@ -1,0 +1,285 @@
+{include file="public/header"}
+    <div class="ch_body">
+        <div class="layui-tab layui-tab-brief" lay-filter="test1">
+            <ul class="layui-tab-title">
+            {volist name="cate" key="k" id="vo"}
+            {if $vo == '最新'}
+                <li lay-id="{$vo.catid}" class="layui-this">{$vo.catname}</li>
+            {else/}
+                <li lay-id="{$vo.catid}" >{$vo.catname}</li>
+            {/if}
+            {/volist}    
+            </ul>
+            
+            <div class="  layui-tab-content">
+                  <!-- 最新 start-->
+                <div style="overflow:hidden" class="layui-tab-item layui-show">
+                    <div class="ch_list_left">
+                        {volist name="news" id="vo"}
+                        {if $vo.catname=='最新'}
+                        <div class="ch_list_area">
+                            <a href="list/{$vo.id}" class="ch_inner_left">
+                                {volist name="$vo.cover" id="v"}
+                                <img class="ch_cover_img" src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}
+                                <p>
+                                    {$vo.uname}  {$vo.comment_count}条评论 {$vo.create_time}
+                                </p>
+                            </a>
+                            <a href="list/{$vo.id}" class="ch_inner_right">{$vo.title}</a>
+                            
+                        </div>
+                        {/if}
+                        {/volist}
+                        <div id="paging1"></div>
+                    </div>
+                    <div class="ch_list_right">
+                        <p>热门文章</p>
+                        <div class="layui-carousel" id="test111">
+                            <div carousel-item>
+                                {volist name="news" id="vo" key="k"}
+                                {if $vo.catname=='最新'}
+                                {volist name="$vo.cover" id="v"}
+                                 
+                                <img src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}{/if}{/volist}
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                
+                  <!-- 最新 end-->
+
+                  <!-- 大公司 start-->
+                <div class="layui-tab-item">
+                    <div class="ch_list_left">
+                        {volist name="news" id="vo"}
+                        {if $vo.catname=='大公司'}
+                        <div class="ch_list_area">
+                            <a href="list/{$vo.id}" class="ch_inner_left">
+                                {volist name="$vo.cover" id="v"}
+                                <img class="ch_cover_img" src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}
+                                <p>
+                                    {$vo.uname}  {$vo.comment_count}条评论 {$vo.create_time}
+                                </p>
+                            </a>
+                            <a href="list/{$vo.id}" class="ch_inner_right">{$vo.title}</a>
+                            
+                        </div>
+                        {/if}
+                        {/volist}
+                        
+                    </div>
+                    <div class="ch_list_right">
+                        <p>热门文章</p>
+                        <div class="layui-carousel" id="test222">
+                            <div carousel-item>
+                                {volist name="news" id="vo" key="k"}
+                                {if $vo.catname=='大公司'}
+                                {volist name="$vo.cover" id="v"}
+                                 
+                                <img src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}{/if}{/volist}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  <!-- 大公司 end-->
+
+
+                  <!-- 内容 start-->
+                <div class="layui-tab-item">
+                    <div class="ch_list_left">
+                        {volist name="news" id="vo"}
+                        {if $vo.catname=='内容'}
+                        <div class="ch_list_area">
+                            <a href="list/{$vo.id}" class="ch_inner_left">
+                                {volist name="$vo.cover" id="v"}
+                                <img class="ch_cover_img" src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}
+                                <p>
+                                    {$vo.uname}  {$vo.comment_count}条评论 {$vo.create_time}
+                                </p>
+                            </a>
+                            <a href="list/{$vo.id}" class="ch_inner_right">{$vo.title}</a>
+                            
+                        </div>
+                        {/if}
+                        {/volist}
+                        
+                    </div>
+                    <div class="ch_list_right">
+                       广告区域 
+                    </div>
+                </div>
+                  <!-- 内容 end-->
+
+
+                  <!-- 消费 start-->
+                <div class="layui-tab-item">
+                    <div class="ch_list_left">
+                        {volist name="news" id="vo"}
+                        {if $vo.catname=='消费'}
+                        <div class="ch_list_area">
+                            <a href="list/{$vo.id}" class="ch_inner_left">
+                                {volist name="$vo.cover" id="v"}
+                                <img class="ch_cover_img" src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}
+                                <p>
+                                    {$vo.uname}  {$vo.comment_count}条评论 {$vo.create_time}
+                                </p>
+                            </a>
+                            <a href="list/{$vo.id}" class="ch_inner_right">{$vo.title}</a>
+                            
+                        </div>
+                        {/if}
+                        {/volist}
+                        
+                    </div>
+                    <div class="ch_list_right">
+                       广告区域 
+                    </div>
+                </div>
+                  <!-- 消费 end-->
+
+                <!-- 娱乐 start-->
+                <div class="layui-tab-item">
+                    <div class="ch_list_left">
+                        {volist name="news" id="vo"}
+                        {if $vo.catname=='娱乐'}
+                        <div class="ch_list_area">
+                            <a href="list/{$vo.id}" class="ch_inner_left">
+                                {volist name="$vo.cover" id="v"}
+                                <img class="ch_cover_img" src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}
+                                <p>
+                                    {$vo.uname}  {$vo.comment_count}条评论 {$vo.create_time}
+                                </p>
+                            </a>
+                            <a href="list/{$vo.id}" class="ch_inner_right">{$vo.title}</a>
+                            
+                        </div>
+                        {/if}
+                        {/volist}
+                        
+                    </div>
+                    <div class="ch_list_right">
+                       广告区域 
+                    </div>
+                </div>
+                 <!-- 娱乐 end-->
+
+                  <!-- 区块链 start-->
+                <div class="layui-tab-item">
+                    <div class="ch_list_left">
+                        {volist name="news" id="vo"}
+                        {if $vo.catname=='区块链'}
+                        <div class="ch_list_area">
+                            <a href="list/{$vo.id}" class="ch_inner_left">
+                                {volist name="$vo.cover" id="v"}
+                                <img class="ch_cover_img" src="/storage/{$v}" alt="{$vo.title}">
+                                {/volist}
+                                <p>
+                                    {$vo.uname}  {$vo.comment_count}条评论 {$vo.create_time}
+                                </p>
+                            </a>
+                            <a href="list/{$vo.id}" class="ch_inner_right">{$vo.title}</a>
+                            
+                        </div>
+                        {/if}
+                        {/volist}
+                        
+                    </div>
+                    <div class="ch_list_right">
+                       广告区域 
+                    </div>
+                </div>
+                <!-- 区块链 end-->
+
+            </div>
+        </div> 
+    </div>
+       
+         
+     
+    
+<!-- jQuery -->
+<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>     
+ 
+<script src="{__LAYUI__}/layui.js"></script> 
+<script type="text/javascript">
+    //推出登录
+
+
+  
+    //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+    layui.use(['element','carousel','laypage','layer'], function(){
+      var element = layui.element;
+      var layer = layui.layer;
+
+      function logout(obj)
+  {
+    layer.confirm('你确定要清除所有的缓存吗?',{icon:3,title:'提示'},function(index)
+    {
+      $.post({
+        url:'/index/logout',
+        type:'post',
+        success:function(res)
+        {
+          if(res.status==1)
+          {
+            layer.msg(res.msg);
+          }else
+          {
+            layer.msg(res.msg);
+          }
+        }
+      },'json')
+      layer.close(index);
+    });
+    
+  }
+      var carousel1 = layui.carousel;
+      var carousel2 = layui.carousel;
+      var laypage = layui.laypage;
+        //建造轮播实例
+        carousel1.render({
+            elem: '#test111'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+
+        carousel2.render({
+            elem: '#test222'
+            ,width: '100%' //设置容器宽度
+            ,arrow: 'always' //始终显示箭头
+            //,anim: 'updown' //切换动画方式
+        });
+
+
+        //执行一个laypage实例
+        laypage.render({
+            elem: 'paging1'  
+            ,count: 50 //数据总数，从服务端得到
+        });
+      //获取hash来切换选项卡，假设当前地址的hash为lay-id对应的值
+        var layid = location.hash.replace(/^#test1=/, '');
+        element.tabChange('test1', layid); //假设当前地址为：http://a.com#test1=222，那么选项卡会自动切换到“发送消息”这一项
+        
+        //监听Tab切换，以改变地址hash值
+        element.on('tab(test1)', function(){
+            location.hash = 'test1='+ this.getAttribute('lay-id');
+        });
+
+
+         
+    });
+    </script>
+
+ 
+</body>
+</html>

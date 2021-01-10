@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>用户登录</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{__PLUGINS__}/fontawesome-free/css/all.min.css">
+  
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{__PLUGINS__}/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{__DIST__}/css/adminlte.min.css">
+   
+</head>
+<style>
+     .captcha
+     {
+         width: 40%;
+         display: inline;
+     }
+</style>
+<body class="hold-transition register-page">
+<div class="register-box">
+  <div class="register-logo">
+    <a style="color:#007bff" href="{:url('/index')}">
+        <img style="width:50px; height: 50px; border-radius: 50%;" src="/static/almasaeed2010/adminlte/dist/img/news_logo.jpg" alt="港湾新闻">
+        <span>
+            <b> 港 湾 新 闻</b>
+        </span>
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">港湾新闻用户登录</p>
+
+      <form role="form" id="login">
+        <div class="card-body">
+          <div class="form-group">
+             
+            <input type="email" name="email" class="form-control"  placeholder="输入邮箱">
+          </div>
+          <div class="form-group">
+           
+            <input type="password" name="pwd" class="form-control"  placeholder="输入密码">
+          </div>
+          <div class="form-group">
+            
+            <input type="text" name="captcha" class=" captcha mr-3 form-control"  placeholder="输入验证码">
+            <img id="verify_img" src="{:url('/login/verify')}" alt="验证码" onclick="refreshVerify()">
+          </div>
+          <div class="form-group mb-0">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">
+              <label class="custom-control-label" for="exampleCheck1">我同意该 <a href="#">服务协议</a></label>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <button type="submit" class="btn form-control btn-primary">登录</button>
+        </div>
+      </form>
+
+       
+
+      <a href="{:url('/reg/index')}" class="text-center">没有账号去注册?</a>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery -->
+<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="{__PLUGINS__}/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- jquery-validation -->
+<script src="{__PLUGINS__}/jquery/jquery.form.min.js"></script>
+<script src="{__PLUGINS__}/jquery-validation/jquery.validate.min.js"></script>
+<script src="{__PLUGINS__}/jquery-validation/additional-methods.min.js"></script>
+<!-- AdminLTE App -->
+<script src="{__DIST__}/js/adminlte.min.js"></script>
+
+<!-- layer -->
+<script src="/static/layui/layui.js" ></script> 
+<script type="text/javascript">
+    layui.use(['layer'],function(){
+		layer = layui.layer;//全局变量layer
+	});
+</script>
+
+<script type="text/javascript">
+
+//刷新验证码
+    function refreshVerify() {
+        $('#verify_img').attr("src", "/login/verify?id=" + Math.random());
+    };
+
+    $(document).ready(function () {
+      $.validator.setDefaults({
+        submitHandler: function (form) {
+            $(form).ajaxSubmit({
+              url:'index',
+              type:'POST',
+              dataType:null,
+              success:function(res){ 
+                if(res=='true'){
+                  layer.alert('登录成功！', {icon: 6}, function(index){
+                  window.location.href="{:url('/index')}";
+                  layer.close(index);
+                  });      
+                }else{
+                  layer.msg('用户名或密码错误！', {icon: 5});
+                }
+                
+              },
+              error:function(){
+                layer.msg('出错啦！', {icon: 5});
+              }
+            });
+          }
+        });
+      $('#login').validate({
+        rules: {
+            
+          email: {
+            required: true,
+            email: true,
+          },
+           
+          pwd: {
+            required: true,
+            rangelength: [6, 14]
+          },
+          captcha: {
+            required: true,
+            remote:{
+              url:"checkcapcha",
+              type:'POST',
+			      },
+          },
+           
+          terms: {
+            required: true
+          },
+        },
+        messages: {
+          email: {
+            required: "请输入邮箱",
+            email: "请输入有效的邮箱"
+          },
+           
+          pwd: {
+            required: "请输入密码",
+			rangelength: "密码长度在6-14个字符之间"
+          },
+
+          captcha: {
+            required:'请输入验证码',
+			remote:'验证码错误！',
+          },
+           
+          terms: "请勾选用户协议"
+        },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+      });
+    });
+    </script>
+</body>
+</html>

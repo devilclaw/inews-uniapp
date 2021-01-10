@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <link rel="stylesheet" href="{__LAYUI__}/css/layui.css">
+    <link rel="stylesheet" href="{__LAYUI__}/css/style.css">
+    <link rel="stylesheet" href="{__SEMANTIC__}/semantic.css">
+    <title>港湾新闻</title>
+</head>
+<body style="background-color: rgb(218, 198, 198); ">
+    <div class="ch_header">
+        <div class="ch_left">
+             <ul>
+                 <li>
+                    <a href="/">
+                        <img style="width:50px; height: 50px; border-radius: 50%;" src="{__DIST__}/img/news_logo.jpg" alt="港湾新闻">
+                    </a>
+                 </li>
+                 <li>
+                    <a href=" "><i class="home icon"></i>首页</a> 
+                 </li>
+                 <li>
+                    <a href=" "><i class="cloud download icon"></i></i>下载</a>
+                 </li>
+             </ul>   
+        </div>
+        <div class="ch_right">
+            <div style="margin-right: 30px;" class="ui icon input">
+                <input type="text" placeholder="搜索...">
+                <i class="inverted circular search link icon"></i>
+            </div>
+
+            <div class="ui buttons">
+                {if condition="session('?uname')"}
+                <a href="" class="ui button">{$uname} 欢迎回来</a>
+                <div class="or"></div>
+                <a href="javascript:;" onclick="logout(this)" class="ui positive button">退出</a>
+                {else}
+                <a href="{:url('/login/index')}" class="ui button">登录</a>
+                <div class="or"></div>
+                <a href="{:url('/reg/index')}" class="ui positive button">注册</a>
+                {/if}
+            </div>
+        </div>
+    </div>
+    <div class="ch_body">
+ <script src="{__LAYUI__}/layui.js"></script> 
+<script type="text/javascript">
+layui.use('layer', function(){
+      
+      layer = layui.layer;
+});
+      function logout(obj)
+        {
+            layer.confirm('你确定要退出吗?',{icon:3,title:'提示'},function(index)
+            {
+                $.post({
+                    url:'/index/logout',
+                    type:'post',
+                    success:function(res)
+                    {
+                        if(res.status==1)
+                        {
+                            layer.msg(res.msg);
+                            location.href="/index";
+                        } 
+                    }
+                },'json');
+                layer.close(index);
+            });
+        }
+      
+</script>
+     

@@ -1,0 +1,366 @@
+{include file="public/header"}
+<!--<div> -->
+<div class="ui breadcrumb">
+	<a class="section" href="{:url('/index')}">首页</a>
+	<div class="divider"> / </div>
+	<a class="active section" href="/#test1={$catid}">{$catname}</a>
+
+</div>
+<div class="ch_detail_area">
+	<div class="ch_detail">
+		  
+		{volist name="$list.cover" id="v"}
+		<img class="ch_cover_img_detail" src="/storage/{$v}" alt="{$list.title}">
+		<p class="ch_title">{$list.title}</p>
+		{/volist}
+		 
+		<p>{$list.uname} 发布于 {$list.create_time}</p>
+		<div>
+			{$list.content|raw}
+		</div>
+		<div class="ui comments">
+			<h3 id="comm_list" class="ui dividing header">评论 <span class="comm_count">{$count}</span></h3>
+			<div id="commFrame">
+				{volist name="comm" id="vo"}
+				{empty name="vo.child"}
+				<div class="comment" id="{$vo.id}">
+					{if $vo.gender == 1}
+					<a class="avatar">
+						<img  src="{__DIST__}/img/user1-128x128.jpg"  >
+					</a>
+					{else /}
+					<!-- 性别女 -->
+					<a class="avatar">
+						<img src="{__DIST__}/img/user4-128x128.jpg"  >
+					</a>
+					{/if}
+					 
+					<div class="content">
+						<a class="author">{$vo.uname}</a>
+						<div class="metadata">
+							<span class="date">{$vo.create_time}</span>
+						</div>
+						<div class="text">{$vo.con} </div>
+						<div class="actions">
+							<a class="reply" session_uname="{$uname}" uname="{$vo.uname}"com_id="{$vo.id}"  pid="{$vo.pid}" onclick="reply(this)">回复</a>
+							<a class="reply" session_uname="{$uname}" uname="{$vo.uname}" com_id="{$vo.id}"  onclick="delComm(this)" >删除</a>
+						</div>
+					</div>
+				</div>
+				{else /}
+				<div class="comment"  id="{$vo.id}">
+						{if $vo.gender == 1}
+						<a class="avatar">
+							<img  src="{__DIST__}/img/user1-128x128.jpg"  >
+						</a>
+						{else /}
+						<!-- 性别女 -->
+						<a class="avatar">
+							<img src="{__DIST__}/img/user4-128x128.jpg"  >
+						</a>
+						{/if}
+					<div class="content">
+						<a class="author">{$vo.uname}</a>
+						<div class="metadata">
+							<span class="date">{$vo.create_time}</span>
+						</div>
+						<div class="text">
+							<p>{$vo.con}</p>
+						</div>
+						<div class="actions">
+							<a class="reply" session_uname="{$uname}" uname="{$vo.uname}"com_id="{$vo.id}"  pid="{$vo.pid}" onclick="reply(this)">回复</a>
+							<a class="reply" session_uname="{$uname}" uname="{$vo.uname}" com_id="{$vo.id}"  pid="{$vo.pid}" onclick="delComm(this)" >删除</a>
+						</div>
+					</div>
+					{volist name="vo.child" id="v"}
+					<div class="comments"  id="{$v.id}">
+						<div class="comment">
+							{if $v.gender == 1}
+							<a class="avatar">
+								<img  src="{__DIST__}/img/user1-128x128.jpg"  >
+							</a>
+							{else /}
+							<!-- 性别女 -->
+							<a class="avatar">
+								<img src="{__DIST__}/img/user4-128x128.jpg"  >
+							</a>
+							{/if}
+							<div class="content">
+								<a class="author">{$v.uname}</a>
+								<div class="metadata">
+									<span class="date">{$v.create_time}</span>
+								</div>
+								<div class="text">{$v.con} </div>
+								<div class="actions">
+									 
+									<a class="reply" com_id="{$v.id}" session_uname="{$uname}" uname="{$v.uname}" onclick="delComm(this)" >删除</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					{/volist}
+				</div>
+				{/empty}
+				{/volist} 
+			</div>
+			
+			<form class="ui reply form">
+				<div class="field">
+					<input type="hidden" name="news_id" value="{$id}">
+					<input type="hidden" name="pid" value="0">
+					<input type="hidden" name="uid" value="{$uid}">
+					<input type="hidden" name="session_uname" value="{$uname}">
+					<textarea name="con" placeholder="来说几句吧......"></textarea>
+				</div>
+				<div id="comm-btn" class="ui blue labeled submit icon button">
+					<i class="icon edit"></i> 发表 
+					<!-- 发表留言头像区 -->
+					<div style="position: absolute; left:107px;top:-2px;"  >
+						{if $gender == 1}
+						<a style='display: block;width: 2.5em;height: auto;float: left;margin: 0.2em 0em 0em;' class="avatar">
+							<img style='display: block;margin: 0em auto;width: 100%; height: 100%;border-radius: 0.25rem;' id="ava" src="{__DIST__}/img/user1-128x128.jpg"  >
+						</a>
+						{elseif $gender == 0}
+						<!-- 性别女 -->
+						<a style='display: block;width: 2.5em;height: auto;float: left;margin: 0.2em 0em 0em;' class="avatar">
+							<img style='display: block;margin: 0em auto;width: 100%; height: 100%;border-radius: 0.25rem;' id="ava" src="{__DIST__}/img/user4-128x128.jpg"  >
+						</a>
+						{/if}
+					</div>
+				</div>
+			</form>
+		</div>
+	</div>
+	<!-- 广告投放区域 -->
+	<div class="ch_ad">
+		<div class="layui-carousel" id="test22">
+			<div carousel-item>
+				<div>条目1</div>
+				<div>条目2</div>
+				<div>条目3</div>
+				<div>条目4</div>
+				<div>条目5</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+</div>
+<!-- jQuery -->
+<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>
+<!-- scrollTo -->
+<script src="https://cdn.jsdelivr.net/npm/jquery.scrollto@2.1.2/jquery.scrollTo.min.js"></script>
+<!-- layer -->
+<script src="{__LAYUI__}/layui.js"></script>
+<script>
+	layui.use(['carousel','layer'], function(){
+    
+		var carousel = layui.carousel;
+		var layer = layui.layer;
+		carousel.render({
+			elem: '#test22'
+			,width: '100%' 
+			,height:'300px' 
+			,arrow: 'always'  
+			
+		});
+	});
+</script>
+<script>
+ 	//动态设置标题
+	var title = $(".ch_cover_img_detail").attr('alt');
+	document.title = title;
+	
+	//发表评论
+	//判断登录状态以及评论内容是否为空
+
+	
+	$("#comm-btn").click(function()
+	{
+		var uid = $("[name='uid']").val();
+		//参数准备
+		var con = $("[name='con']").val(); 
+            //当前登录者姓名
+		var  uname = $("[name='session_uname']").val();  
+		 
+		if (uid == '' )
+            {      
+                layer.open({
+					type: 2, 
+                    content:'/login/index',
+                    area:['40%','80%'],
+                    btn:['回到当前页面？'],
+                    anim: 5,
+                    maxmin: true,
+                    end:function(index,layero){
+                        location.reload();
+                    }
+                })
+                return;
+            }
+
+			if (con=='') {
+                layer.msg('评论不能为空',{icon: 5});
+                return false;
+            }
+
+			loadMessage(con,uname);
+			
+	})
+	 
+
+
+	function loadMessage(con,uname)
+	{
+		
+		var ava = $("#ava").attr('src');
+		var data = {};
+		data.con=$("[name='con']").val();
+		data.news_id= $("[name='news_id']").val();
+		data.pid= $("[name='pid']").val();
+		$.post('/detail/add',data,function(e){
+			clearComm();
+			if (e.status == 1) {
+				layer.msg('发表成功',{icon:6});
+				//如果发表的是一级评论
+				var count = $(".comment").length;
+				count++;
+				$(".comm_count").text(count);
+
+				if (e.pid == 0) {
+					$.scrollTo('#comm_list',500);
+					var com_id=e.com_id;
+					var commentDiv = "<div class='comment' id="+com_id+">";
+					commentDiv += "<a style='display: block;width: 2.5em;height: auto;float: left;margin: 0.2em 0em 0em;' class='avator'><img style='display: block;margin: 0em auto;width: 100%; height: 100%;border-radius: 0.25rem;'  src='"+ava+"'></a>";
+					commentDiv += "<div class='content' style='margin-left: 3.5em;'><a class='author'>";
+					commentDiv += uname;
+					commentDiv += "</a><div class='metadata'><span class='date'>刚刚</span></div><div class='text'>";
+					commentDiv += data.con;
+					commentDiv += "</div><div class='actions'>";
+					commentDiv += "<a class='reply' uname='"+uname+"'  pid='0' com_id='"+com_id+"' onclick='reply(this)'  session_uname='"+uname+"' >回复</a><a class='reply' uname='"+uname+"'  pid='0' com_id='"+com_id+"' onclick='delComm(this)'  session_uname='"+uname+"' >删除</a>";
+					commentDiv += "</div> </div> </div>";
+						 
+					$("#commFrame").prepend(commentDiv); 	
+		
+					//如果发表的是二级评论 （回复）
+				}else{
+					$.scrollTo("."+e.pid,500);
+					var com_id = e.com_id;
+					var commentDiv="<div class='comments' id="+com_id+"><div class='comment' id="+com_id+">";
+					commentDiv += "<a  style='display: block;width: 2.5em;height: auto;float: left;margin: 0.2em 0em 0em;' class='avator'><img style='display: block;margin: 0em auto;width: 100%; height: 100%;border-radius: 0.25rem;'   src=' " + ava + " ' ></a>";
+					commentDiv += "<div class='content' style='margin-left: 3.5em;'><a class='author'>";
+					commentDiv += uname;
+					commentDiv += "</a><div class='metadata'><span class='date'>";
+					commentDiv += "刚刚";
+					commentDiv += "</span></div><div class='text'>";
+					commentDiv += data.con;
+					commentDiv += "</div><div class='actions'>";
+					commentDiv += " <a class='reply' uname='"+uname+"'  pid='0' com_id='"+com_id+"' onclick='delComm(this)'  session_uname='"+uname+"' >删除</a>";
+
+					commentDiv += "</div> </div> </div>";
+					$("#"+e.pid).append(commentDiv); 
+				}
+			}
+		},'json')
+	}
+
+	//评论回复
+	function reply(obj)
+	{	
+		var com_id = $(obj).attr("com_id");	
+		var uname = $(obj).attr("uname");
+		var session_uname = $(obj).attr("session_uname");
+		if (session_uname == '') {
+			layer.open({
+				type: 2, 
+				content:'/login/index',
+				area:['60%','60%'],
+				btn:['回到当前页面？'],
+				anim: 5,
+				maxmin: true,
+				end:function(index,layero){
+					location.reload();
+				}
+
+			})
+			return;
+			
+		}
+		if (uname == session_uname ) {
+			
+			layer.alert('不能回复自己', {icon: 2}, function(index){
+				layer.close(index);
+			});
+			return;
+		}
+		$("[name='con']").attr("placeholder","@"+ uname).focus();
+		$("[name='pid']").val(com_id);
+		
+
+	}
+
+	//评论删除
+	function delComm(obj)
+	{
+		var count = $(".comment").length ;
+   		 
+		//评论的发表者
+		var uname = $(obj).attr("uname");
+		
+		//当前登录者
+		var session_uname = $(obj).attr("session_uname");
+		
+		if (session_uname == '') {
+			layer.open({
+				type: 2, 
+				content:'/login/index',
+				area:['50%','80%'],
+				btn:['回到当前页面？'],
+				anim: 5,
+				maxmin: true,
+				end:function(index,layero){
+					location.reload();
+				}
+
+			})
+            return;
+                
+		}
+		 
+		if (uname !== session_uname ) {
+			
+			layer.alert('只能删除自己的评论', {icon: 2}, function(index){
+				layer.close(index);
+			});
+			return;
+		}
+		var data={};
+		data.com_id = $(obj).attr("com_id");
+		data.news_id= $("[name='news_id']").val();
+		console.log(data);
+		$.post('/detail/del',data,function(res){      
+			if(res.status==1){ 
+				count--;
+				$(".comm_count").text(count);
+				layer.msg(res.msg,{icon:6}); 
+				
+				$("#"+data.com_id).detach(); 
+				 
+				 
+			}
+		},"json")
+
+	}
+	 //清除评论框
+	 function clearComm()
+        {
+            $("[name='con']").val('');
+            $("[name='pid']").val(0);
+            $("[name='con']").attr("placeholder","来说几句吧......");
+
+        }
+
+    
+</script>
+</body>
+</html>

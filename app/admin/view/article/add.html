@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>用户管理</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+
+		<!-- webuploader -->
+		<link rel="stylesheet" type="text/css" href="/static/uploader/css/webuploader.css" />
+		<link rel="stylesheet" type="text/css" href="/static/uploader/examples/image-upload/style.css" />
+		
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="{__PLUGINS__}/fontawesome-free/css/all.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="{__DIST__}/css/adminlte.min.css">
+
+	</head>
+	<body class="hold-transition sidebar-mini layout-fixed">
+		<div class="wrapper">
+
+			<!-- Content Wrapper. Contains page content -->
+
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							 
+						</div><!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item active"><i class="fas fa-home "></i> 首页 </li>
+								<li class="breadcrumb-item ">文章新增</li>
+							</ol>
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+				</div><!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+
+					<div style="padding: 0.5rem;">
+						<form role="form" id="quickForm">
+                            <div class="card-body">
+                              <div class="form-group">
+                                <label for="catid"  >请选择文章分类</label>
+                                 <select class="form-control"  name="catid" id="catid">
+									 <option value="">请选择分类</option>
+									 {volist name = "cate" id="vo"}
+									 <option value="{$vo.catid}">{$vo.catname}</option>
+									 {/volist}
+								 </select>
+                              </div>
+                              <div class="form-group">
+                                <label for="title">文章标题</label>
+                                <input type="text" name="title" class="form-control" id="pwd" placeholder="输入文章标题">
+							  </div>
+
+							  <div class="form-group">
+                                <label for="title">文章内容</label>
+								<script id="content" name="content" type="text/plain"> </script>
+							  </div>
+							  
+							  <div class="form-group">
+                                <label for="title">文章封面</label>
+								<div id="wrapper">
+									<div id="container">
+										<!--头部，相册选择和格式选择-->
+							
+										<div id="uploader">
+											<div class="queueList">
+												<div id="dndArea" class="placeholder">
+													<div id="filePicker"></div>
+													<p>或将照片拖到这里，单次最多可选10张</p>
+												</div>
+											</div>
+											<div class="statusBar" style="display:none;">
+												<div class="progress">
+													<span class="text">0%</span>
+													<span class="percentage"></span>
+												</div><div class="info"></div>
+												<div class="btns">
+													<div id="filePicker2"></div><div class="uploadBtn">开始上传</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							  </div>
+                               
+                              <div class="form-group">
+								  <!-- 图片地址隐藏div -->
+								  <div id="pic">
+
+								  </div>
+                                <label>状态</label>
+                                &nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="status" value="1" checked="checked" >&nbsp;&nbsp;启用
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <input type="radio" name="status" value="0" >&nbsp;&nbsp;禁用
+                              </div>
+                            
+                               
+                            </div>
+                            <!-- /.card-body -->
+                            <div class="card-footer">
+                              <button type="submit" class="btn  btn-primary">确定</button>
+                            </div>
+                          </form>
+					</div>
+
+				</div><!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+
+
+		</div>
+		<!-- ./wrapper -->
+
+	<!-- jQuery -->
+<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>
+ <!-- AdminLTE App -->
+<script src="{__DIST__}/js/adminlte.min.js"></script>
+
+<!-- jquery-validation -->
+<script src="{__PLUGINS__}/jquery/jquery.form.min.js"></script>
+<script src="{__PLUGINS__}/jquery-validation/jquery.validate.min.js"></script>
+<script src="{__PLUGINS__}/jquery-validation/additional-methods.min.js"></script>
+
+
+<!-- webuploader'js -->
+<!-- 定义upload.js中需要使用得当常量BASE_URL -->
+<script type="text/javascript" >var BASE_URL  = '/static/uploader/';</script>
+<script type="text/javascript" src="/static/uploader/dist/webuploader.js"></script>
+<script type="text/javascript" src="/static/uploader/examples/image-upload/upload.js"></script>
+
+<!-- ueditor'js -->
+<!-- 配置文件 -->
+<script type="text/javascript" src="/static/ueditor/ueditor.config.js"></script>
+<!-- 编辑器源码文件 -->
+<script type="text/javascript" src="/static/ueditor/ueditor.all.js"></script>
+<!-- 实例化编辑器 -->
+<script type="text/javascript">
+	var ue = UE.getEditor('content');
+</script>
+		
+ 
+<!-- layui -->
+<script src="/static/layui/layui.js"></script>
+<script type="text/javascript">
+//layui 弹出层
+
+layui.use(['layer'], function(){
+    layer = layui.layer;
+}); 
+
+
+// $(document).ready(function) 文档加载后就激活function函数
+$(document).ready(function () {
+  $.validator.setDefaults({
+    submitHandler: function (form) {
+        $(form).ajaxSubmit(
+            {
+                url:'add',
+                dataType:null,
+                type:'POST',
+                success:function(res){
+                     if(res == 'true')
+                     {
+                         layer.alert('新增成功',{icon:6},function(index){
+                             window.location.href="{:url('/article/index')}";
+                             layer.close(index);
+                         })
+                     }else{
+                         layer.msg('新增失败',{icon:5});
+                     }
+                },
+                error:function(){
+                    layer.msg('出错啦',{icon:5});
+                }
+            }
+        )
+    }
+  });
+  $('#quickForm').validate({
+    rules: {
+      title: {
+        required: true,
+        remote:{
+			url:'checktitle',
+			type:'POST'
+		}
+      },
+      catid: {
+        required: true,  
+	  },
+      content: {
+        required: true,
+         
+      }
+    },
+    messages: {
+		title: {
+			required: "请输入文章标题",
+			remote: "标题已存在,请更换"
+		},
+      catid: {
+        required: "请选择文章分类",
+        
+	  } ,
+	  content: {
+        required: "请输入文章内容",
+        
+      } 
+       
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+});
+</script>
+</body>
+</html>
+

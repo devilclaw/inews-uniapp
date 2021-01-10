@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>用户管理</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Font Awesome -->
+		<!-- DataTables -->
+		<link rel="stylesheet" href="{__PLUGINS__}/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="{__PLUGINS__}/datatables-responsive/css/responsive.bootstrap4.min.css">
+		<link rel="stylesheet" href="{__PLUGINS__}/fontawesome-free/css/all.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="{__DIST__}/css/adminlte.min.css">
+
+	</head>
+	<body class="hold-transition sidebar-mini layout-fixed">
+		<div class="wrapper">
+
+			<!-- Content Wrapper. Contains page content -->
+
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0 text-dark">
+								<small>
+									<a title="添加一条新数据" class="btn btn-success" href="{:url('/auth/addgroup')}"><i class="fas fa-plus mr-2"></i>新增</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									<a title="查看列表" class="btn btn-primary" href="{:url('/auth/group')}"><i class="fas fa-list-alt mr-2"></i>列表</a>
+								</small>
+							</h1>
+						</div><!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item active"><i class="fas fa-home "></i> 首页 </li>
+								<li class="breadcrumb-item ">用户管理</li>
+							</ol>
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+				</div><!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+
+					<div style="padding: 0.5rem;">
+						<div class="row">
+							<div class="col-12">
+								<div class="card">
+									<div class="card-header">
+										<h3 class="card-title">用户管理</h3>
+									</div>
+									<!-- /.card-header -->
+									<div class="card-body">
+										<table id="example1" class="table table-bordered table-striped">
+											<thead>
+												<tr>
+													<th>id</th>
+													<th>角色名称</th>
+													<th>状态</th>
+													<th>操作</th>
+												</tr>
+											</thead>
+											<tbody>
+												
+											</tbody>
+										 
+										</table>
+									</div>
+									<!-- /.card-body -->
+								</div>
+								<!-- /.card -->
+							</div>
+							<!-- /.col -->
+						</div>
+						<!-- /.row -->
+					</div>
+
+				</div><!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+
+
+		</div>
+		<!-- ./wrapper -->
+
+		<!-- jQuery -->
+		<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="{__DIST__}/js/adminlte.js"></script>
+		<!-- Bootstrap 4 -->
+		<script src="{__PLUGINS__}/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="{__PLUGINS__}/datatables/jquery.dataTables.min.js"></script>
+		<script src="{__PLUGINS__}/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		<script src="{__PLUGINS__}/datatables-responsive/js/dataTables.responsive.min.js"></script>
+		<script src="{__PLUGINS__}/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+		<script src="/static/layui/layui.js"></script>
+		<script>
+			layui.use(['layer'], function() {
+				layer = layui.layer;
+			});
+		 //http://datatables.club/reference/option/
+			$(function() {
+				$("#example1").DataTable({
+					 
+					"language":{
+						"processing": "处理中...",
+						"lengthMenu": "显示 _MENU_ 项结果",
+						"zeroRecords": "没有匹配结果",
+						"info": "显示第 _START_ 至 _END_ 项结果，共 _TOTAL_ 项",
+						"infoEmpty": "显示第 0 至 0 项结果，共 0 项",
+						"infoFiltered": "(由 _MAX_ 项结果过滤)",
+						"infoPostFix": "",
+						"search": "搜索:",
+						"searchPlaceholder": "搜索...",
+						"url": "",
+						"emptyTable": "表中数据为空",
+						"loadingRecords": "载入中...",
+						"infoThousands": ",",
+						"paginate": {
+							"first": "首页",
+							"previous": "上页",
+							"next": "下页",
+							"last": "末页"
+						},
+						"aria": {
+							"paginate": {
+								"first": "首页",
+								"previous": "上页",
+								"next": "下页",
+								"last": "末页"
+							},
+							"sortAscending": "以升序排列此列",
+							"sortDescending": "以降序排列此列"
+						},
+						"thousands": "."
+					},
+					// "responsive": true,
+					"autoWidth": false,
+					 //分页按钮显示选项
+					"pagingType": "full_numbers",
+					/**给每一行tr 添加一个唯一id**/
+					"rowId":"id",
+					//在重新加载页面时还原表状态。
+					"stateSave": true,
+					"stateDuration":-1,
+					/**显示加载中**/
+					"processing": true,
+					/**开启服务器模式**/
+					"serverSide": true,
+					"ajax": {
+						"url": "group",
+						"type": "POST",
+						"dataType": "JSON",
+						//Datatables默认接收的是一个属性为 data，如果你返回的数据不是这样， 你需要使用 ajax.dataSrcOption 来处理
+						"dataSrc": "tableData",
+						// "dataSrc": function(res) {
+						// 	return res.data;
+						// }
+					},
+					
+					"columns": [
+						/******列定义参数*****/
+						{
+							"data": "id",
+							"name": "编号"
+						},
+						{
+							"data": "title",
+							"name": "角色名称",
+							"orderable": false,
+							/**禁用排序**/
+						},
+						{
+							"data": "status",
+							"name": "状态",
+							"orderable": false,
+							/**禁用排序**/
+						}
+						 
+
+
+					],
+					/******自定义列*****/
+					"columnDefs": [{
+						/**指定第最后一列**/
+						"targets": 3,
+						/**禁用排序**/
+						"orderable": false,
+					 
+						/*数据渲染 重定函数
+						data当前单元格的数据,
+						type: 当前列的类型(display,filter),
+						row: 当前行完整的数据对象
+						 meta: 为一个子对象,包含3个属性
+							row: 当前行的索引
+							col: 当前列的索引
+							settings: 当前DataTables控件的setttings对象*/
+						render: function(data, type, row, meta) {
+
+							var html = "";
+							html += '<a  class="btn btn-primary"  href="{:url("/auth/updategroup")}?id=' + row.id +
+								'"  title="编辑"><i class="nav-icon fas fa-edit"></i></a>';
+							html += "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;";
+						 
+							html +=
+								'<a  class="btn btn-danger " style="color:#fff" onclick="layer.confirm(\'删除后无法恢复，确定要删除吗？\',{icon:3,title:\'提示\'}, function(index){delgroup(\'' +
+								row.id + '\');layer.close(index);});" title="删除"><i class="fas fa-trash-alt"></i></a>';
+							return html;
+						}
+					}],
+
+
+				});
+
+			});
+
+			function delgroup(id) {
+				$.ajax({
+					url: 'delgroup',
+					type: 'post',
+					data: {
+						'id': id
+					},
+					success: function(res) {
+						//删除成功后页面局部刷新
+						res == 'true' ? $('#' + id).remove() : layer.msg('删除失败！', {
+							icon: 5
+						});
+					}
+				})
+			}
+		</script>
+	</body>
+</html>

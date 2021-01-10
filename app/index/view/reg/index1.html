@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>AdminLTE 3 | Registration Page</title>
+  <!-- Tell the browser to be responsive to screen width -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{__PLUGINS__}/fontawesome-free/css/all.min.css">
+  <!-- Ionicons -->
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{__PLUGINS__}/icheck-bootstrap/icheck-bootstrap.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{__DIST__}/css/adminlte.min.css">
+  <!-- Google Font: Source Sans Pro -->
+  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+  <div class="register-logo">
+    <a style="color:#007bff" href="{:url('/index')}">
+        <img style="width:50px; height: 50px; border-radius: 50%;" src="/static/almasaeed2010/adminlte/dist/img/logo.jpg" alt="港湾新闻">
+        <span>
+            <b> 港 湾 新 闻</b>
+        </span>
+    </a>
+  </div>
+
+  <div class="card">
+    <div class="card-body register-card-body">
+      <p class="login-box-msg">港湾新闻用户注册</p>
+
+      <form role="form" id="quickForm">
+        <div class="card-body">
+          <div class="form-group">
+            
+            <input type="email" name="email" class="form-control"  placeholder="请输入邮箱">
+          </div>
+          <div class="form-group">
+            
+            <input type="text" name="uname" class="form-control"  placeholder="请输入用户名">
+          </div>
+          <div class="form-group">
+            <div class="form-group">
+            
+                <input type="number" name="tel" class="form-control"  placeholder="请输入手机号">
+              </div>
+              <div class="form-group">
+             
+            <input type="password" name="pwd" class="form-control" id="pwd" placeholder="请输入密码">
+          </div>
+          <div class="form-group">
+             
+            <input type="password" name="pwd_v" class="form-control" id="pwd_v" placeholder="请确认密码">
+          </div>
+          <div class="form-group clearfix">
+            <div class="icheck-success d-inline">
+              <input type="radio" name="r3" checked id="radioSuccess1">
+              <label for="radioSuccess1">男
+              </label>
+            </div>
+            <div class="icheck-success d-inline">
+              <input type="radio" name="r3" id="radioSuccess2">
+              <label for="radioSuccess2">女
+              </label>
+            </div>
+             
+          </div>
+          <div class="form-group mb-0">
+            <div class="custom-control custom-checkbox">
+              <input type="checkbox" name="terms" class="custom-control-input" id="exampleCheck1">
+              <label class="custom-control-label" for="exampleCheck1">我同意该 <a href="#">用户协议</a></label>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+        <div class="card-footer">
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+      </form>
+
+       
+
+      <a href="login.html" class="text-center">已有账号直接去登录？</a>
+    </div>
+    <!-- /.form-box -->
+  </div><!-- /.card -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery -->
+<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="{__PLUGINS__}/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<!-- jquery-validation -->
+<script src="{__PLUGINS__}/jquery/jquery.form.min.js"></script>
+<script src="{__PLUGINS__}/jquery-validation/jquery.validate.min.js"></script>
+<script src="{__PLUGINS__}/jquery-validation/additional-methods.min.js"></script>
+<script type="text/javascript">
+    jQuery.validator.addMethod("isMobile", function(value, element) {  
+    var length = value.length;  
+    var mobile = /^(13[0-9]{9})|(18[0-9]{9})|(14[0-9]{9})|(17[0-9]{9})|(15[0-9]{9})$/;  
+    return this.optional(element) || (length == 11 && mobile.test(value));  
+    }, "请正确填写手机号码");  
+ 
+</script> 
+<!-- AdminLTE App -->
+<script src="{__DIST__}/js/adminlte.min.js"></script>
+<script src="/static/layui/layui.js" ></script> 
+<script type="text/javascript">
+    layui.use(['layer'],function(){
+		layer = layui.layer;
+	});
+    $(document).ready(function () {
+      $.validator.setDefaults({
+        submitHandler: function (form) {
+          $(form).ajaxSubmit({
+                url:'add',
+				type:'POST',
+				dataType:null,
+				success:function(res){ 
+					if(res=='true'){
+						layer.alert('注册成功！', {icon: 6}, function(index){
+						window.location.href="{:url('/login/index')}";
+						layer.close(index);
+						});      
+					}else{
+						layer.msg('注册失败,请稍后重试！', {icon: 5});
+					}
+					
+				},
+				error:function(){
+					layer.msg('出错啦！', {icon: 5});
+				}
+          })
+        }
+      });
+      $('#quickForm').validate({
+        rules: {
+            
+            email: {
+              required: true,
+              email: true,
+            },
+            
+            uname: {
+              required: true,
+              minlength:2,
+            },
+            tel: {
+              required: true,
+              isMobile : true
+            },
+            
+            pwd: {
+              required: true,
+              rangelength: [6, 14]
+            },
+            pwd_v: {
+              required: true,
+              equalTo: "#pwd",
+            },
+            terms: {
+              required: true
+            },
+          },
+          messages: {
+            email: {
+              required: "请输入邮箱",
+              email: "请输入有效的邮箱"
+            },
+            tel: {
+              required: "请输入手机号",
+              isMobile : "请正确填写手机号码"
+          },
+            uname: {
+              required: "请输入用户名",
+              minlength: "用户名至少2个字符"
+            },
+            pwd: {
+              required: "请输入密码",
+              rangelength: "密码长度在6-14个字符之间"
+            },
+            pwd_v: {
+              required: "请再次确认密码",
+              equalTo: '两次输入的密码不一致',
+            },
+            terms: "请勾选用户协议"
+          },
+        errorElement: 'span',
+        errorPlacement: function (error, element) {
+          error.addClass('invalid-feedback');
+          element.closest('.form-group').append(error);
+        },
+        highlight: function (element, errorClass, validClass) {
+          $(element).addClass('is-invalid');
+        },
+        unhighlight: function (element, errorClass, validClass) {
+          $(element).removeClass('is-invalid');
+        }
+      });
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>文章管理</title>
+		<!-- Tell the browser to be responsive to screen width -->
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!-- Font Awesome -->
+		<!-- DataTables -->
+		<link rel="stylesheet" href="{__PLUGINS__}/datatables-bs4/css/dataTables.bootstrap4.min.css">
+		<link rel="stylesheet" href="{__PLUGINS__}/datatables-responsive/css/responsive.bootstrap4.min.css">
+		<link rel="stylesheet" href="{__PLUGINS__}/fontawesome-free/css/all.min.css">
+		<!-- Theme style -->
+		<link rel="stylesheet" href="{__DIST__}/css/adminlte.min.css">
+
+	</head>
+	<body class="hold-transition sidebar-mini layout-fixed">
+		<div class="wrapper">
+
+			<!-- Content Wrapper. Contains page content -->
+
+			<!-- Content Header (Page header) -->
+			<div class="content-header">
+				<div class="container-fluid">
+					<div class="row mb-2">
+						<div class="col-sm-6">
+							<h1 class="m-0 text-dark">
+								<small>
+									<a title="添加一条新数据" class="btn btn-success" href="{:url('/article/add')}"><i class="fas fa-plus mr-2"></i>新增</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									<a title="回收站" class="btn btn-primary" href="{:url('/article/recycleBin')}"><i class="fas fa-trash-restore-alt mr-2"></i>回收站</a>
+									&nbsp;&nbsp;&nbsp;&nbsp;
+									 
+								</small>
+							</h1>
+						</div><!-- /.col -->
+						<div class="col-sm-6">
+							<ol class="breadcrumb float-sm-right">
+								<li class="breadcrumb-item active"><i class="fas fa-home "></i> 首页 </li>
+								<li class="breadcrumb-item ">文章管理</li>
+							</ol>
+						</div><!-- /.col -->
+					</div><!-- /.row -->
+				</div><!-- /.container-fluid -->
+			</div>
+			<!-- /.content-header -->
+
+			<!-- Main content -->
+			<section class="content">
+				<div class="container-fluid">
+
+					<div style="padding: 0.5rem;">
+						<div class="row">
+							<div class="col-12">
+								<div class="card">
+									<div class="card-header">
+										<h3 class="card-title">文章管理</h3>
+									</div>
+									<!-- /.card-header -->
+									<!-- id="delform" -->
+									<form name="delform" method="post">
+										<div class="card-body">
+											<table id="example1" class="table table-bordered table-striped">
+												<thead>
+													<tr>
+														<th>
+															<input type="checkbox" name="select_all" id="select-all">
+														</th>
+														<th>编号</th>
+														<th>标题</th>
+														<th>类别</th> 
+														<th>作者</th> 
+														<th>时间</th>
+														<th>状态</th>
+														<th>排序</th>
+														<th>操作</th>
+													</tr>
+												</thead>
+												<tbody>
+
+												</tbody>
+												<tfoot>
+													<tr>
+														<th>
+															<input type="submit" class="btn btn-danger" name="sub" value="批量回收"  onclick="if(confirm('移到回收站后将不显示，可以从回收站列表找回？')){document.delform.action='{:url('/article/bulkRecycle')}';document.delform.submit();}else{return false;}">
+														</th>
+													</tr>
+												</tfoot>
+
+											</table>
+										</div>
+									</form>
+									<!-- /.card-body -->
+								</div>
+								<!-- /.card -->
+							</div>
+							<!-- /.col -->
+						</div>
+						<!-- /.row -->
+					</div>
+
+				</div><!-- /.container-fluid -->
+			</section>
+			<!-- /.content -->
+
+
+		</div>
+		<!-- ./wrapper -->
+
+		<!-- jQuery -->
+		<script src="{__PLUGINS__}/jquery/jquery.min.js"></script>
+		<!-- AdminLTE App -->
+		<script src="{__DIST__}/js/adminlte.js"></script>
+		<!-- Bootstrap 4 -->
+		<script src="{__PLUGINS__}/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- DataTables -->
+		<script src="{__PLUGINS__}/datatables/jquery.dataTables.min.js"></script>
+		<script src="{__PLUGINS__}/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+		
+		<script src="/static/layui/layui.js"></script>
+		<script>
+			layui.use(['layer'], function() {
+				layer = layui.layer;
+			});
+			$(function() {
+				$("#example1").DataTable({
+					"processing": true,/**显示加载中**/
+					"serverSide": true,/**开启服务器模式**/
+					"pagingType": "full_numbers",/**显示分页 simple_numbers full_numbers 默认simple_numbers**/
+		 
+					"order": [[1,'desc']],/**这里有点小bug 插件默认第一列升序导致columnDefs 第一列 "orderable":false 无效**/
+					
+					'autoWidth'   : false,//默认值为true
+					
+					"stateSave": true,/**状态保存 - 再次加载页面时还原表格状态 默认false不保存当前状态 刷新不会先前设置的状态      true保存当前状态**/
+					"stateDuration": -1,/**状态保存周期 -1表示仅保留当前会话的数据 Use sessionStorage**/
+					"rowId":'id',/**给每一行tr 添加一个唯一id**/
+					"ajax":{
+						"url":"index",
+						"type":"POST",
+						"dataType":"JSON",
+						"dataSrc":function(res){
+							return res.data;
+						}
+						
+					},
+					"columns":[
+			/******自定义列*****/
+			{
+				data: null
+				 
+			},
+			
+			{
+			"data":"id",
+			"title": "编号"
+			
+			},
+			{
+			"data":"title",
+			"title": "标题",
+			"orderable":false,/**禁用排序**/
+			},
+			{
+			"data":"uname",
+			"title": "作者",
+			"orderable":false,/**禁用排序**/
+			 
+			},
+			{
+			"data":"catname",
+			"title": "类别",
+			"orderable":false,/**禁用排序**/
+			 
+			},
+			 
+			
+			{
+			"data":"create_time",
+			"title": "时间" 
+			// "orderable":false,/**禁用排序**/
+			},
+			
+			{
+			"data":"status",
+			"title": "状态",
+			"orderable":false,/**禁用排序**/
+			},
+		 
+		 
+			
+			
+			
+			
+		],
+		
+		
+		/******自定义列*****/
+		"columnDefs": [ 
+		{
+            "targets": 0,/**指定第一列**/
+			"orderable":false,/**禁用排序**/
+			// "className":"select-checkbox",
+             render: function(data, type, row, meta) {
+				return '<input class="single-check" type="checkbox" name="ids[]" id="ids[]" value="' +row.id+ '">';
+			}
+        },
+		
+		{
+            "targets": 7,/**指定第最后一列**/
+			"orderable":false,/**禁用排序**/
+             render: function(data, type, row, meta) {
+			 var html="";
+				html+= '<a class="btn btn-primary"  href="{:url("/article/update")}?id='+row.id+'"><i class="fas fa-edit" title="编辑"></i></a>';
+				html+="&nbsp;&nbsp;";
+				html+= '<a style="color:#fff" class="btn btn-danger"  onclick="layer.confirm(\'移除后列表将不显示，可以从回收站找回？\', function(index){recycle(\''+row.id+'\',\'1\');layer.close(index);}); "><i class="fas fa-recycle" title="移到回收站"></i></a>';
+				return html;
+				
+			}
+        }
+		],
+		
+		 
+		
+
+	
+		 
+	})
+	
+  })
+  
+  
+ /**checkbox 全选/反选**/
+  $('#select-all').on('click', function () {
+        if (this.checked) {
+            $('.single-check').each(function () {
+                this.checked = true;
+            });
+        } else {
+            $('.single-check').each(function () {
+                this.checked = false;
+            });
+        }
+    });
+ 
+  /**添加到回收站**/
+	function recycle(id,type){
+		$.ajax({
+			url:'recycle',
+			type:'post',
+			data:{'id':id,'type':type},
+			success:function(res){
+			if(res=='true'){
+				$('#'+id).remove(); 
+			}else {
+
+				layer.msg(res+'操作失败！', {
+					icon: 5
+				});
+			}
+		}
+		})
+	}
+	
+</script>
+</body>
+</html>
